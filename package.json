@@ -1,0 +1,37 @@
+{
+  "name": "kse-trade-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "type": "module",
+  "scripts": {
+    "run:dev": "npx vite-node index.ts",
+    "build": "tsc",
+    "run:prod": "npm run build && node ./dist/index.js",
+    "db:migrate": "npx prisma migrate dev --name init"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/client": "^5.4.2",
+    "@types/lodash": "^4.14.199",
+    "dayjs": "^1.11.10",
+    "lodash": "^4.17.21",
+    "nanoid": "^5.0.1",
+    "rxjs": "^7.8.1",
+    "socket.io": "^4.7.2"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.4",
+    "@typescript-eslint/eslint-plugin": "^6.7.5",
+    "@typescript-eslint/parser": "^6.7.5",
+    "eslint": "^8.51.0",
+    "prisma": "^5.4.2",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.2.2"
+  },
+  "optionalDependencies": {
+    "bufferutil": "^4.0.7",
+    "utf-8-validate": "^5.0.10"
+  }
+}

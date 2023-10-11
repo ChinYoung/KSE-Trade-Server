@@ -1,0 +1,29 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Status {
+  VALID
+  INVALID
+}
+
+model Trade {
+  id        Int      @id @default(autoincrement())
+  tradeId   String   @unique
+  name      String
+  symbol    String   @db.Char(1)
+  trader    String
+  prevPrice Decimal @default(0)
+  price     Decimal
+  status    Status
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Trade` ADD COLUMN `prevPrice` DECIMAL(65, 30) NOT NULL DEFAULT 0;
