@@ -15,16 +15,17 @@ export type TTradeContext = {
 
 type THandlerInput<T> = {
   context: TTradeContext
-  eventData: T
+  eventData: T,
 }
 
-export type TTradeEventHandler<I, R = undefined, D = undefined> = (props: THandlerInput<I>) => R extends EResponseType ? (undefined | TResponse<R, D> | Promise<TResponse<R, D> | undefined>) : undefined
+export type TTradeEventHandler<I = undefined, R = undefined, D = undefined> = (props: THandlerInput<I>) => (R extends EResponseType ? (TResponse<R, D> | Promise<TResponse<R, D>>) : unknown)
 
 
 interface ITradeServer {
   context: TTradeContext
   on<I, R extends EResponseType | undefined, D = undefined>(requestEventName: ERequestType, handler: TTradeEventHandler<I, R, D>): void
   emit<T extends EResponseType, D>(responseConfig: TResponse<T, D>): void
+  close(): void
 }
 
 export class TradeServer implements ITradeServer {
@@ -42,12 +43,13 @@ export class TradeServer implements ITradeServer {
   constructor() {
     this.serverInstance.on('connection', (socket) => {
       this.handlerMap && Object.entries(this.handlerMap).forEach(([eventName, handler]) => {
-        socket.on(eventName, async (ev) => {
-          const res = await handler({ eventData: ev, context: this.context })
+        socket.on(eventName, async (eventData) => {
+          const res = await handler({ eventData, context: this.context })
           if (!res) {
             return
           }
-          const { data, eventName } = res
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          const { data, eventName } = res as TResponse<any, any>
           this.serverInstance.sockets.emit(eventName, data)
         })
       })
@@ -72,12 +74,17 @@ export class TradeServer implements ITradeServer {
 
   on<I = undefined, T = undefined, D = undefined>(eventName: ERequestType, handler: TTradeEventHandler<I, T, D>) {
     this.handlerMap = {
-      ...this.handlerMap ?? {},
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ...this.handlerMap ?? {} as Record<ERequestType, TTradeEventHandler<any, any, any>>,
       [eventName]: handler
     }
   }
 
   emit<T extends EResponseType, D>({ eventName, data }: TResponse<T, D>) {
     this.serverInstance.emit(eventName, data)
+  }
+
+  close() {
+    this.serverInstance.close()
   }
 }
