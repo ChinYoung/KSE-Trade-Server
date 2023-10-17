@@ -1,0 +1,8 @@
+# TBD
+services:
+  tradeserver:
+    build: .
+    ports:
+      - "888:888"
+  mysql:
+    image: "mysql:latest"
