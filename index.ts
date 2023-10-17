@@ -4,8 +4,11 @@ import { mockBatchTrade } from './src/mock/mockTrade';
 import { TradeServer } from './src/server';
 import { logTime } from './src/utils';
 import { ERequestType, EResponseType, TRenderListPayload, TRequestDeleteINput as TRequestDeleteInput, TRequestRenderListInput, TUpdateTotalCountPayload } from './src/types/trade';
+import { config } from "dotenv";
+
 
 function startUp() {
+  config()
   const server = new TradeServer()
   server.on<
     TRequestRenderListInput,

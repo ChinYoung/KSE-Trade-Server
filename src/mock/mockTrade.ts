@@ -21,7 +21,7 @@ export function randomTrade(): TTradePayload {
   }
 }
 
-const MAX_MOCK_COUNT = 10
+const MAX_MOCK_COUNT: number = parseInt(process.env.MAX_MOCK_COUNT || '10')
 
 export function mockNew<T>(factory: () => T): T[] {
   if (!randomBoolean()) {
