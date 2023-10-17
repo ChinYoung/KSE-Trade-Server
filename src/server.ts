@@ -18,7 +18,7 @@ type THandlerInput<T> = {
   eventData: T,
 }
 
-export type TTradeEventHandler<I = undefined, R = undefined, D = undefined> = (props: THandlerInput<I>) => (R extends EResponseType ? (TResponse<R, D> | Promise<TResponse<R, D>>) : unknown)
+export type TTradeEventHandler<I = undefined, R = undefined, D = undefined> = (props: THandlerInput<I>) => (R extends EResponseType ? (TResponse<R, D> | Promise<TResponse<R, D>>) : undefined)
 
 
 interface ITradeServer {
@@ -72,7 +72,7 @@ export class TradeServer implements ITradeServer {
     }
   }
 
-  on<I = undefined, T = undefined, D = undefined>(eventName: ERequestType, handler: TTradeEventHandler<I, T, D>) {
+  on<I = undefined, R = undefined, D = undefined>(eventName: ERequestType, handler: TTradeEventHandler<I, R, D>) {
     this.handlerMap = {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ...this.handlerMap ?? {} as Record<ERequestType, TTradeEventHandler<any, any, any>>,

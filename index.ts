@@ -65,12 +65,14 @@ function startUp() {
         await logTime(
           async () => {
             const { startIndex, endIndex, tradeManager } = server.context
+            const mockStart = Math.floor((endIndex - startIndex) * 0.3)
             const trades = await tradeManager.getMany(startIndex, endIndex)
-            trades[10] && updatedItems[0] && (updatedItems[0].tradeId = trades[10].tradeId)
-            trades[11] && updatedItems[1] && (updatedItems[1].tradeId = trades[11].tradeId)
-            trades[12] && updatedItems[2] && (updatedItems[2].tradeId = trades[12].tradeId)
-            trades[13] && updatedItems[3] && (updatedItems[3].tradeId = trades[13].tradeId)
-            trades[14] && updatedItems[4] && (updatedItems[4].tradeId = trades[14].tradeId)
+
+            trades[mockStart] && updatedItems[0] && (updatedItems[0].tradeId = trades[mockStart].tradeId)
+            trades[mockStart + 1] && updatedItems[1] && (updatedItems[1].tradeId = trades[mockStart + 1].tradeId)
+            trades[mockStart + 2] && updatedItems[2] && (updatedItems[2].tradeId = trades[mockStart + 2].tradeId)
+            trades[mockStart + 3] && updatedItems[3] && (updatedItems[3].tradeId = trades[mockStart + 3].tradeId)
+            trades[mockStart + 4] && updatedItems[4] && (updatedItems[4].tradeId = trades[mockStart + 4].tradeId)
             await server.context.tradeManager.blendedUpdate({
               added: newItems,
               deleted: [],
